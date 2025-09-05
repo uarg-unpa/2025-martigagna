@@ -30,29 +30,66 @@ pelicula_con_colaboracion(TituloPelicula) :- actor(NombreActor1, TituloPelicula)
 % CONSULTAS
 % a) ¿Cuáles películas dirige Christopher Nolan?
 % ?- director(christopher_nolan, TituloPelicula).
-% Prolog buscara todos los hechos director(christopher_nolan, X).
-% Se unifica con inception luego con dunkerque 
-% Resultado: TituloPelicula = inception; dunkerque.
+% Prolog buscará en la base hechos que coincidan con el primer argumento 'christopher_nolan'.
+% Encuentra inception y dunkerque, unifica TituloPelicula con cada uno.
+% Con backtracking devuelve primero inception, luego dunkerque.
+% Salida:    TituloPelicula = inception;  
+%            TituloPelicula = dunkerque.
 
 % b) ¿Cuáles actores actúan en películas de ciencia ficción?
 % ?- pelicula(TituloPelicula, ciencia_ficcion), actor(NombreActor, TituloPelicula).
-% Prolog busca peliculas con genero ciencia_ficcion: inception y avengers
-% Con cada resultado unifica TituloPelicula con inception y avengers
-% Para inception encuentra a leonardo_dicaprio y para avengers encuentra a chris_evans y mark_ruffalo
-% Resultado: NombreActor = leonardo_dicaprio; chris_evans; mark_ruffalo.
+% Primero busca en la base de hechos películas con género ciencia_ficcion 
+% Para cada una (inception y avengers), unifica TituloPelicula y busca actores de esa película.
+% Devuelve leonardo_dicaprio (inception), chris_evans y mark_ruffalo (avengers).
+% Usa backtracking para recorrer todas las combinaciones posibles.
+
+% Salida: 
+%            TituloPelicula = inception,
+%            NombreActor = leonardo_dicaprio ;
+%            TituloPelicula = avengers,
+%            NombreActor = chris_evans ;
+%            TituloPelicula = avengers,
+%            NombreActor = mark_ruffalo.
+
 
 % c) Lista todas las películas y sus géneros.
 % ?- pelicula(TituloPelicula, Genero).
-% Prolog recorre todos los hechos
-% Devuelve uno por uno: inception, ciencia_ficcion - forrest_gump, drama - etc.
+% Prolog recorre todos los hechos 
+% En cada paso unifica TituloPelicula con el nombre y Genero con su género.
+% Va probando con cada hecho usando backtracking hasta agotar todas las opciones.
+% Salida: TituloPelicula = inception,
+% NombreActor = leonardo_dicaprio ;
+% TituloPelicula = avengers,
+% NombreActor = chris_evans ;
+% TituloPelicula = avengers,
+% NombreActor = mark_ruffalo.
+% TituloPelicula = inception,
+% Genero = ciencia_ficcion ;
+% TituloPelicula = forrest_gump,
+% Genero = drama ;
+% TituloPelicula = jurassic_park,
+% Genero = aventura ;
+% TituloPelicula = avengers,
+% Genero = ciencia_ficcion ;
+% TituloPelicula = dunkerque,
+% Genero = accion ;
+% TituloPelicula = titanic,
+% Genero = drama ;
+% TituloPelicula = catch_me_if_you_can,
+% Genero = comedia.
 
 
 % d) ¿Hay algún actor que actúe en Inception y en otra película?
 % ?- actor(NombreActor, inception), actor(NombreActor, OtraPelicula), OtraPelicula \= inception.
 % Busca actores de inception: leonardo_dicaprio
-% Con ese mismo actor busca otras peliculas: titanic, catch_me_if_you_can
-% Verifica que OtraPelicula sea distinto a inception
-% Resultado: NombreActor = leonardo_dicaprio, OtraPelicula = titanic;
-% NombreActor = leonardo_dicaprio, OtraPelicula = catch_me_if_you_can.
+% Con ese mismo actor busca otras peliculas y unifica con titanic y catch_me_if_you_can
+% Verifica que OtraPelicula sea distinto a inception con la condicion \=
+% Salida: NombreActor = leonardo_dicaprio,
+%         OtraPelicula = titanic ;
+%         NombreActor = leonardo_dicaprio,
+%         OtraPelicula = catch_me_if_you_can.
 
 
+% CONSULTAS PROPIAS
+% ¿Qué actores trabajaron en películas dirigidas por Steve Spielberg?
+%
